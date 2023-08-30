@@ -1,8 +1,9 @@
 package br.com.syonet.hamburguer.api;
 
 import jakarta.ws.rs.Produces;
-
+import jakarta.ws.rs.QueryParam;
 import br.com.syonet.hamburguer.Entity.Order;
+import br.com.syonet.hamburguer.Entity.Status;
 import br.com.syonet.hamburguer.Repository.OrderRepo;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -24,9 +25,11 @@ public class OrderResource {
     OrderRepo repo;
 
     @GET
-    @Path("/{id}")
-    public Order getOrder(@PathParam("id") Integer id) {
-        return repo.getOrder(id);
+    public Response getOrder(@QueryParam("id") Integer id, @QueryParam("status") Status status) {
+        if(status != null) {
+            return Response.ok(repo.getOrdersByStatus(status)).build();
+        }
+        return repo.deleteOrder(id);
     }
 
     @PUT

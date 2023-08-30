@@ -1,7 +1,7 @@
 package br.com.syonet.hamburguer.api;
 
 import jakarta.ws.rs.Produces;
-
+import jakarta.ws.rs.QueryParam;
 import br.com.syonet.hamburguer.Entity.Customer;
 import br.com.syonet.hamburguer.Repository.CustomerRepo;
 import jakarta.inject.Inject;
@@ -24,8 +24,10 @@ public class CustomerResource {
     CustomerRepo repo;
 
     @GET
-    @Path("/{id}")
-    public Customer getCustomer(@PathParam("id") Integer id) {
+    public Customer getCustomer(@QueryParam("id") Integer id, @QueryParam("idCard") Integer idCard) {
+        if (idCard != null) {
+            return repo.getCustomerByIdCard(idCard);
+        }
         return repo.getCustomer(id);
     }
 
